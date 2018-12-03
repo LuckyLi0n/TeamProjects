@@ -4,13 +4,33 @@ import random
 
 root = Tk()
 root.geometry('1000x600')
-canv = Canvas(root,  bg='white')
+canv = Canvas(root,  bg='DeepSkyBlue')
 canv.pack(fill=BOTH, expand=1)
 
-for circle_right, circle_up, circle_left, circle_down in [(-300, 500, 300, 1100),
-                                                          (600, 400, 1400, 1200),
-                                                          (-50, 425, 950, 1425)]:
-    canv.create_oval(circle_right, circle_up, circle_left, circle_down, fill="green", outline='green')
+def create_background():
+    canv.create_oval(200, 275, 1800, 1000, fill='DarkGreen', outline='DarkGreen')
+
+    canv.create_polygon(100, 350, 175, 150, 175, 600, fill='DimGray', outline='DimGray')
+    canv.create_polygon(175, 600, 175, 150, 250, 350, fill='gray', outline='gray')
+
+    canv.create_polygon(300, 375, 450, 175, 450, 600, fill='DimGray', outline='DimGray')
+    canv.create_polygon(450, 600, 450, 175, 725, 550, fill='gray', outline='gray')
+
+    canv.create_polygon(100, 400, 300, 75, 300, 600, fill='DimGray', outline='gray')
+    canv.create_polygon(300, 600, 300, 75, 550, 525, fill='gray', outline='DimGray')
+
+    canv.create_polygon(-50, 500, 100, 200, 100, 600, fill='DimGray', outline='DimGray')
+    canv.create_polygon(100, 600, 100, 200, 250, 525, fill='gray', outline='gray')
+
+    canv.create_oval(900, 100 , 1100, -100, fill='gold', outline='gold')
+
+
+    for circle_right, circle_up, circle_left, circle_down in [(-300, 500, 300, 1100),
+                                                              (600, 400, 1400, 1200),
+                                                              (-50, 425, 950, 1425),
+                                                              (600, 300, 3000, 2700)]:
+        canv.create_oval(circle_right, circle_up, circle_left, circle_down, fill="ForestGreen", outline='ForestGreen')
+
 
 
 turn_point_1, turn_point_2, turn_point_3, turn_point_4 = 0, 139, 727, 1000
@@ -40,7 +60,7 @@ def coordination():
     if coordinate_now >= coordinate_desired:
         dx = -dx
         canv.delete(line)
-        line = canv.create_line(x, y, x - 30, y - 20, width=5, fill="red")
+        line = canv.create_line(x, y, x - 30, y - 20, width=5, fill="purple")
         max = coordinate_now
         min = coordinate_desired
     else:
@@ -51,7 +71,7 @@ def coordination():
 
 def move():
     def run():
-        global x, y, dx, dy, oval, coordinate_now, coordinate_desired
+        global x, y, dx, dy, oval, coordinate_now, coordinate_desired, max, min
         if min <= x <= max:
             x = x + dx
             if turn_point_1 <= x <= turn_point_2:
@@ -77,9 +97,10 @@ def move():
     root.after(20, run())
 
 
+create_background()
 find_y()
-oval = canv.create_oval(x - 20, y - 20, x + 20, y + 20, fill="red", outline='red')
-line = canv.create_line(x, y, x + 30, y - 20, width=5, fill="red")
+oval = canv.create_oval(x - 20, y - 20, x + 20, y + 20, fill="pink", outline='purple')
+line = canv.create_line(x, y, x + 30, y - 20, width=5, fill="purple")
 coordination()
 move()
 
