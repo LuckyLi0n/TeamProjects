@@ -10,19 +10,28 @@ canv.pack(fill=BOTH, expand=1)
 def create_background():
     canv.create_oval(200, 275, 1800, 1000, fill='DarkGreen', outline='DarkGreen')
 
-    canv.create_polygon(100, 350, 175, 150, 175, 600, fill='DimGray', outline='DimGray')
-    canv.create_polygon(175, 600, 175, 150, 250, 350, fill='gray', outline='gray')
+    mount_11 = canv.create_polygon(100, 350, 175, 150, 175, 600, fill='DimGray', outline='DimGray')
+    mount_12 = canv.create_polygon(175, 600, 175, 150, 250, 350, fill='gray', outline='gray')
 
-    canv.create_polygon(300, 375, 450, 175, 450, 600, fill='DimGray', outline='DimGray')
-    canv.create_polygon(450, 600, 450, 175, 725, 550, fill='gray', outline='gray')
+    mount_21 = canv.create_polygon(300, 375, 450, 175, 450, 600, fill='DimGray', outline='DimGray')
+    mount_22 = canv.create_polygon(450, 600, 450, 175, 725, 550, fill='gray', outline='gray')
 
-    canv.create_polygon(100, 400, 300, 75, 300, 600, fill='DimGray', outline='gray')
-    canv.create_polygon(300, 600, 300, 75, 550, 525, fill='gray', outline='DimGray')
+    mount_31 = canv.create_polygon(100, 400, 300, 75, 300, 600, fill='DimGray', outline='gray')
+    mount_32 = canv.create_polygon(300, 600, 300, 75, 550, 525, fill='gray', outline='DimGray')
 
-    canv.create_polygon(-50, 500, 100, 200, 100, 600, fill='DimGray', outline='DimGray')
-    canv.create_polygon(100, 600, 100, 200, 250, 525, fill='gray', outline='gray')
+    mount_41 = canv.create_polygon(-50, 500, 100, 200, 100, 600, fill='DimGray', outline='DimGray')
+    mount_42 = canv.create_polygon(100, 600, 100, 200, 250, 525, fill='gray', outline='gray')
 
-    canv.create_oval(900, 100 , 1100, -100, fill='gold', outline='gold')
+    sun = canv.create_oval(900, 100, 1100, -100, fill='gold', outline='gold')
+
+    sunray_1 = canv.create_line(1000, 0, 795, 25, width=2, fill='gold')
+    sunray_2 = canv.create_line(1000, 0, 835, 50, width=2, fill='gold')
+    sunray_3 = canv.create_line(1000, 0, 810, 80, width=2, fill='gold')
+    sunray_4 = canv.create_line(1000, 0, 860, 90, width=2, fill='gold')
+    sunray_5 = canv.create_line(1000, 0, 875, 130, width=2, fill='gold')
+    sunray_6 = canv.create_line(1000, 0, 925, 125, width=2, fill='gold')
+    sunray_7 = canv.create_line(1000, 0, 950, 170, width=2, fill='gold')
+    sunray_8 = canv.create_line(1000, 0, 980, 130, width=2, fill='gold')
 
 
     for circle_right, circle_up, circle_left, circle_down in [(-300, 500, 300, 1100),
