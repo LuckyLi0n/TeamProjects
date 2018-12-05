@@ -8,30 +8,73 @@ canv = Canvas(root,  bg='DeepSkyBlue')
 canv.pack(fill=BOTH, expand=1)
 
 def create_background():
-    canv.create_oval(200, 275, 1800, 1000, fill='DarkGreen', outline='DarkGreen')
+    canv.create_oval(325, 275, 1800, 1000, fill='DarkGreen', outline='DarkGreen')
 
-    mount_11 = canv.create_polygon(100, 350, 175, 150, 175, 600, fill='DimGray', outline='DimGray')
-    mount_12 = canv.create_polygon(175, 600, 175, 150, 250, 350, fill='gray', outline='gray')
 
-    mount_21 = canv.create_polygon(300, 375, 450, 175, 450, 600, fill='DimGray', outline='DimGray')
-    mount_22 = canv.create_polygon(450, 600, 450, 175, 725, 550, fill='gray', outline='gray')
+    def mount():
+        mount_11 = canv.create_polygon(100, 350, 175, 150, 175, 600, fill='gray42', outline='gray42')
+        mount_12 = canv.create_polygon(175, 600, 175, 150, 250, 350, fill='gray45', outline='gray45')
+        snow_1 = canv.create_polygon(137, 250, 175, 150, 220, 250, 185, 221, 175, 250, 159, 224, fill='white', outline='white')
 
-    mount_31 = canv.create_polygon(100, 400, 300, 75, 300, 600, fill='DimGray', outline='gray')
-    mount_32 = canv.create_polygon(300, 600, 300, 75, 550, 525, fill='gray', outline='DimGray')
+        mount_21 = canv.create_polygon(300, 375, 450, 175, 450, 600, fill='gray41', outline='gray41')
+        mount_22 = canv.create_polygon(450, 600, 450, 175, 725, 550, fill='gray45', outline='gray45')
+        snow_2 = canv.create_polygon(393, 250, 450, 175, 505, 250, 465, 235, 450, 250, 425, 237, fill='white', outline='white')
 
-    mount_41 = canv.create_polygon(-50, 500, 100, 200, 100, 600, fill='DimGray', outline='DimGray')
-    mount_42 = canv.create_polygon(100, 600, 100, 200, 250, 525, fill='gray', outline='gray')
+        mount_31 = canv.create_polygon(100, 400, 300, 75, 300, 600, fill='gray40', outline='gray40')
+        mount_32 = canv.create_polygon(300, 600, 300, 75, 550, 525, fill='gray45', outline='gray45')
+        snow_3 = canv.create_polygon(223, 200, 300, 75, 370, 200, 330, 170,  300, 200, 275, 165, fill='white', outline='white')
 
-    sun = canv.create_oval(900, 100, 1100, -100, fill='gold', outline='gold')
+        mount_41 = canv.create_polygon(-50, 500, 100, 200, 100, 600, fill='gray41', outline='gray41')
+        mount_42 = canv.create_polygon(100, 600, 100, 200, 250, 525, fill='gray45', outline='gray45')
+        snow_4 = canv.create_polygon(62, 275, 100, 200, 137, 275, 115, 257, 100, 275, 85, 255, fill='white', outline='white')
 
-    sunray_1 = canv.create_line(1000, 0, 795, 25, width=2, fill='gold')
-    sunray_2 = canv.create_line(1000, 0, 835, 50, width=2, fill='gold')
-    sunray_3 = canv.create_line(1000, 0, 810, 80, width=2, fill='gold')
-    sunray_4 = canv.create_line(1000, 0, 860, 90, width=2, fill='gold')
-    sunray_5 = canv.create_line(1000, 0, 875, 130, width=2, fill='gold')
-    sunray_6 = canv.create_line(1000, 0, 925, 125, width=2, fill='gold')
-    sunray_7 = canv.create_line(1000, 0, 950, 170, width=2, fill='gold')
-    sunray_8 = canv.create_line(1000, 0, 980, 130, width=2, fill='gold')
+        def forest():
+
+            tree1 = canv.create_polygon(587, 350, 600, 300,  613, 350, fill='SpringGreen4', outline='SpringGreen4')
+            canv.create_line(600, 350, 600, 363, width=4, fill='Sienna')
+
+            tree2 = canv.create_polygon(587, 350, 600, 300, 613, 350, fill='SpringGreen4', outline='SpringGreen4')
+            canv.create_line(600, 350, 600, 363, width=4, fill='Sienna')
+
+            canv.create_line(775, 425, 775, 450, width=4, fill='Sienna')
+            tree3 = canv.create_polygon(750, 425, 775, 350, 800, 425, fill='SpringGreen4', outline='SpringGreen4')
+
+
+            canv.create_line(900, 375, 900, 392, width=4, fill='Sienna')
+            tree4 = canv.create_polygon(880, 375, 900, 315, 920, 375, fill='SpringGreen4', outline='SpringGreen4')
+
+
+            tree5 = canv.create_polygon(587, 350, 600, 300, 613, 350, fill='SpringGreen4', outline='SpringGreen4')
+            canv.create_line(600, 350, 600, 363, width=4, fill='Sienna')
+
+            canv.create_line(975, 300, 975, 312, width=4, fill='Sienna')
+            tree6 = canv.create_polygon(963, 300, 975, 250, 988, 300, fill='SpringGreen4', outline='SpringGreen4')
+
+
+        forest()
+
+
+
+
+    snow_5 = canv.create_polygon(0, 0, 15, 0, 5, 0, fill='white', outline='white')
+    snow_6 = canv.create_polygon(0, 0, 5, 0, 5, 0, fill='white', outline='white')
+    snow_7 = canv.create_polygon(10, 0, 5, 0, 5, 0, fill='white', outline='white')
+
+
+    def create_sun():
+        sun = canv.create_oval(900, 100, 1100, -100, fill='gold', outline='gold')
+
+        sunray_1 = canv.create_line(1000, 0, 795, 25, width=2, fill='gold')
+        sunray_2 = canv.create_line(1000, 0, 835, 50, width=2, fill='gold')
+        sunray_3 = canv.create_line(1000, 0, 810, 80, width=2, fill='gold')
+        sunray_4 = canv.create_line(1000, 0, 860, 90, width=2, fill='gold')
+        sunray_5 = canv.create_line(1000, 0, 875, 130, width=2, fill='gold')
+        sunray_6 = canv.create_line(1000, 0, 925, 125, width=2, fill='gold')
+        sunray_7 = canv.create_line(1000, 0, 950, 170, width=2, fill='gold')
+        sunray_8 = canv.create_line(1000, 0, 980, 130, width=2, fill='gold')
+
+    create_sun()
+    mount()
 
 
     for circle_right, circle_up, circle_left, circle_down in [(-300, 500, 300, 1100),
