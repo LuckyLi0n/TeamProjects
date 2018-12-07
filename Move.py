@@ -28,30 +28,30 @@ def create_background():
         mount_42 = canv.create_polygon(100, 600, 100, 200, 250, 525, fill='gray45', outline='gray45')
         snow_4 = canv.create_polygon(62, 275, 100, 200, 137, 275, 115, 257, 100, 275, 85, 255, fill='white', outline='white')
 
-        def forest():
-
-            tree1 = canv.create_polygon(587, 350, 600, 300,  613, 350, fill='SpringGreen4', outline='SpringGreen4')
-            canv.create_line(600, 350, 600, 363, width=4, fill='Sienna')
-
-            tree2 = canv.create_polygon(587, 350, 600, 300, 613, 350, fill='SpringGreen4', outline='SpringGreen4')
-            canv.create_line(600, 350, 600, 363, width=4, fill='Sienna')
-
-            canv.create_line(775, 425, 775, 450, width=4, fill='Sienna')
-            tree3 = canv.create_polygon(750, 425, 775, 350, 800, 425, fill='SpringGreen4', outline='SpringGreen4')
+    def forest():
+        tree1 = canv.create_polygon(587, 350, 600, 300, 613, 350, fill='SpringGreen4', outline='SpringGreen4')
+        canv.create_line(600, 350, 600, 363, width=4, fill='Sienna')
 
 
-            canv.create_line(900, 375, 900, 392, width=4, fill='Sienna')
-            tree4 = canv.create_polygon(880, 375, 900, 315, 920, 375, fill='SpringGreen4', outline='SpringGreen4')
+        tree2 = canv.create_polygon(587, 350, 600, 300, 613, 350, fill='SpringGreen4', outline='SpringGreen4')
+        canv.create_line(600, 350, 600, 363, width=4, fill='Sienna')
 
+        canv.create_line(775, 425, 775, 450, width=4, fill='Sienna')
+        tree3 = canv.create_polygon(750, 425, 775, 350, 800, 425, fill='SpringGreen4', outline='SpringGreen4')
 
-            tree5 = canv.create_polygon(587, 350, 600, 300, 613, 350, fill='SpringGreen4', outline='SpringGreen4')
-            canv.create_line(600, 350, 600, 363, width=4, fill='Sienna')
+        canv.create_line(900, 375, 900, 392, width=4, fill='Sienna')
+        tree4 = canv.create_polygon(880, 375, 900, 315, 920, 375, fill='SpringGreen4', outline='SpringGreen4')
 
-            canv.create_line(975, 300, 975, 312, width=4, fill='Sienna')
-            tree6 = canv.create_polygon(963, 300, 975, 250, 988, 300, fill='SpringGreen4', outline='SpringGreen4')
+        tree5 = canv.create_polygon(587, 350, 600, 300, 613, 350, fill='SpringGreen4', outline='SpringGreen4')
+        canv.create_line(600, 350, 600, 363, width=4, fill='Sienna')
 
+        canv.create_line(975, 300, 975, 312, width=4, fill='Sienna')
+        tree6 = canv.create_polygon(963, 300, 975, 250, 988, 300, fill='SpringGreen4', outline='SpringGreen4')
 
-        forest()
+        tree_snow_1 = canv.create_polygon(596, 313, 600, 300, 604, 313, fill='white', outline='white')
+        tree_snow_2 = canv.create_polygon(971, 263, 975, 250, 979, 263, fill='white', outline='white')
+
+    forest()
 
 
 
@@ -73,6 +73,13 @@ def create_background():
         sunray_7 = canv.create_line(1000, 0, 950, 170, width=2, fill='gold')
         sunray_8 = canv.create_line(1000, 0, 980, 130, width=2, fill='gold')
 
+
+    def create_cloud():
+        x = 20
+        Cloud_1 = canv.create_oval(x, x, x+30, x+30, fill='white', outline='white')
+        Cloud_2 = canv.create_oval(20, 20, 50, 50, fill='white', outline='white')
+
+
     create_sun()
     mount()
 
@@ -90,7 +97,9 @@ turn_point_1, turn_point_2, turn_point_3, turn_point_4 = 0, 139, 727, 1000
 global x, y, dx, dy, oval, coordinate_now, coordinate_desired
 
 coordinate_now = random.randint(0, 1000)
+"""Сюда должна передавать нынешняя координата цента пушки"""
 coordinate_desired = random.randint(0, 1000)
+"""Сюда должна передавваться координата X от нажатия правой кнопки мышки"""
 dx = 1
 dy = 1
 x = coordinate_now
@@ -108,6 +117,8 @@ def find_y():
 
 
 def coordination():
+    """Сравнивает нынешнее положение пушки с тем, в котором пушка хочет оказаться.
+    В зависимость от этого пересчитывает dx"""
     global x, y, dx, coordinate_now, coordinate_desired, line, max, min
     if coordinate_now >= coordinate_desired:
         dx = -dx
@@ -122,6 +133,7 @@ def coordination():
 
 
 def move():
+    """"Двигает пушку в нужную координату"""
     def run():
         global x, y, dx, dy, oval, coordinate_now, coordinate_desired, max, min
         if min <= x <= max:
