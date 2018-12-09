@@ -1,4 +1,4 @@
-from random import randrange as rnd, choice, uniform
+from random import randrange as rnd, choice, randrange
 from tkinter import *
 from math import *
 import time
@@ -109,8 +109,8 @@ class ball():
         self.balls = balls
         self.bum_time = 10
         self.bum_on = 0
-        self.vx_wind = uniform(-0.05, 0.05)
-        self.vy_wind = uniform(-0.01, 0.05)
+        self.vx_wind = randrange(-2, 2, 1)
+        self.vy_wind = randrange(-5, 5, 1)
         self.turn_point_1, self.turn_point_2, self.turn_point_3, self.turn_point_4 = 0, 139, 727, 1000
 
     def paint(self):
@@ -129,9 +129,9 @@ class ball():
 
         if self.y <= y:
             self.vy += 0.1
-            self.y += self.vy + self.vx_wind
+            self.y += self.vy + self.vy_wind/100
             self.x += self.vx
-            self.vx *= (0.999-self.vy_wind)
+            self.vx *= (0.999-self.vx_wind/100)
             self.v = (self.vx ** 2 + self.vy ** 2) ** 0.5
             """считает полную скорость шарика"""
             self.an = atan(self.vy / self.vx)
@@ -249,9 +249,7 @@ class gun():
             self.f2_power = 35
 
     def moved(self, event):
-        print('Hello')
-
-        print()
+        print('MOVED')
 
         def find_y():
             if self.turn_point_1 <= self.x <= self.turn_point_2:
@@ -262,14 +260,12 @@ class gun():
                 self.y = 800 - sqrt(400 ** 2 - (self.x - 1000) ** 2)
 
         def coordination():
-
             """Сравнивает нынешнее положение пушки с тем, в котором пушка хочет оказаться.
             В зависимость от этого пересчитывает dx"""
             if self.x >= event.x:
                 self.dx = - self.dx
                 canv.delete(self.oval)
                 canv.delete(self.id)
-
                 self.oval = canv.create_oval(self.x - 20, self.y - 20, self.x + 20, self.y + 20, fill="pink",
                                              outline='purple')
                 self.id = canv.create_line(self.x, self.y, self.x - 30, self.y - 20, width=5, fill="purple")
@@ -318,6 +314,11 @@ class gun():
 
 
     def aiming(self, event=0):
+        canv.delete(self.oval)
+        canv.delete(self.id)
+        self.oval = canv.create_oval(self.x - 20, self.y - 20, self.x + 20, self.y + 20, fill="pink",
+                                     outline='purple')
+        self.id = canv.create_line(self.x, self.y, self.x - 30, self.y - 20, width=5, fill="purple")
         if event:
             if abs(event.x - self.x) < 0.0001:
                 event.x += 0.1
@@ -340,11 +341,7 @@ class gun():
         else:
             canv.itemconfig(self.id, fill='purple')
 
-    def bum(self, event=0):
-        for b in self.balls[::-1]:
-            if b.nature:
-                b.bum()
-                break
+
 
 
 
@@ -353,9 +350,9 @@ class game():
     def __init__(self):
         self.moving = []
         self.gamer1 = gun()
-        self.gamer2 = gun()
         self.gamer1.x = 10
         self.gamer1.y = 500
+        self.gamer2 = gun()
         self.gamer2.x = 990
         self.gamer2.y = 400
         self.gamer1.balls = self.moving
@@ -405,7 +402,7 @@ class game():
             self.active_gamer.aiming()
             self.active_gamer.power_up()
             canv.update()
-            time.sleep(0.007)
+            time.sleep(0.01)
 
 
 game1 = game()
