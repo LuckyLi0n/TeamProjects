@@ -10,10 +10,13 @@ canv.pack(fill=BOTH, expand=1)
 
 colors = ['blue', 'green', 'red', 'brown']
 
+
 def create_background():
+    global big_hill
     big_hill = canv.create_oval(325, 275, 1800, 1000, fill='DarkGreen', outline='DarkGreen')
 
     def mount():
+
         mount_11 = canv.create_polygon(100, 350, 175, 150, 175, 600, fill='gray42', outline='gray42')
         mount_12 = canv.create_polygon(175, 600, 175, 150, 250, 350, fill='gray45', outline='gray45')
         snow_1 = canv.create_polygon(137, 250, 175, 150, 220, 250, 185, 221, 175, 250, 159, 224, fill='white', outline='white')
@@ -86,40 +89,37 @@ def create_background():
         canv.create_oval(circle_right, circle_up, circle_left, circle_down, fill="ForestGreen", outline='ForestGreen')
 
 
-create_background()
-
-
-
-
-
-
-class ball():
-    def __init__(self, balls, x=10, y=10):
+class Ball:
+    def __init__(self, balls, x=1100, y=400):
         """СОЗДАЕТ ШАРИК В ОПРЕДЕЛЕННОЙ КООРДИНАТЕ, ЗАДАЕТ ЕГО ОСНОВНЫЕ ПАРАМЕТРЫ"""
         self.x = x
         self.y = y
         self.r = 8
+        self.vx = 1
+        self.vy = 1
         self.color = choice(colors)
         self.points = 3
         self.id = canv.create_oval(self.x - self.r, self.y - self.r, self.x + self.r, self.y + self.r, fill=self.color)
-        self.live = 10
-        '''отвечает за скорость исчезновения'''
-        self.nature = 1
+        self.Balls = balls
+        '''отвечает за "скорость" исчезновения'''
+        self.live = 5
         """пока хз что это"""
-        self.balls = balls
-        self.bum_time = 10
+
+        self.bum_time = 1
         self.bum_on = 0
-        self.vx_wind = randrange(-2, 2, 1)
+        '''задает скорость ветра по иксу и игреку соответственно'''
+        self.vx_wind = randrange(-15, 15, 2)
         self.vy_wind = randrange(-5, 5, 1)
+        """задает ключевые точки рельефа"""
         self.turn_point_1, self.turn_point_2, self.turn_point_3, self.turn_point_4 = 0, 139, 727, 1000
 
     def paint(self):
+        """отвечает за отрисовку шарика в новой коордитате"""
         canv.coords(self.id, self.x - self.r, self.y - self.r, self.x + self.r, self.y + self.r)
 
-        """отвечает за отрисовку шарика в новой коордитате"""
-
     def move(self):
-
+        y = 0
+        """Отвечет за движение шара, расчет его скорости, его удаление"""
         if self.turn_point_1 <= self.x <= self.turn_point_2:
             y = 800 - sqrt(300 ** 2 - self.x ** 2)
         elif self.turn_point_2 <= self.x <= self.turn_point_3:
@@ -131,80 +131,37 @@ class ball():
             self.vy += 0.1
             self.y += self.vy + self.vy_wind/100
             self.x += self.vx
-            self.vx *= (0.999-self.vx_wind/100)
-            self.v = (self.vx ** 2 + self.vy ** 2) ** 0.5
-            """считает полную скорость шарика"""
-            self.an = atan(self.vy / self.vx)
+            self.vx *= (0.999-self.vx_wind/1000)
             self.paint()
 
-            """уничтожает шарик"""
         else:
+            """уничтожает шарик"""
             self.live -= 1
             if self.live < 0:
                 self.bum()
 
+        if self.x > 990:
             """отвечает за поворот шарика при ударе о стену"""
-        if self.x > 1000:
             self.vx = - self.vx / 2
-            self.x = 999
-        elif self.x < 0:
+            self.x = 989
+        elif self.x < 10:
             self.vx = - self.vx / 2
-            self.x = 1
-
-
-
-
+            self.x = 11
 
     def kill(self):
         canv.delete(self.id)
         try:
             '''отвечает за удаление шарика для перевода хода'''
-            self.balls.pop(self.balls.index(self))
+            self.Balls.pop(self.Balls.index(self))
 
-        except:
+        except ArithmeticError:
             pass
 
     def bum(self):
-        if self.nature:
-            self.kill()
+        self.kill()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class gun():
+class Gun:
     def __init__(self):
         self.f2_power = 10
         self.x = 10
@@ -228,6 +185,7 @@ class gun():
         self.bullet = 0
 
     def fire_start(self, event):
+        print(event.x, event.y)
         if self.on:
             self.f2_on = 1
 
@@ -236,15 +194,16 @@ class gun():
         self.on = 0
 
     def fire_end(self, event):
+        print(event.x, event.y)
         if self.on:
             self.bullet += 1
-            new_ball = ball(self.balls)
+            new_ball = Ball(self.Balls)
             new_ball.r += 5
             new_ball.x = self.x
             new_ball.y = self.y
             new_ball.vx = self.f2_power * cos(self.an) / 9
             new_ball.vy = self.f2_power * sin(self.an) / 9
-            self.balls += [new_ball]
+            self.Balls += [new_ball]
             self.f2_on = 0
             self.f2_power = 35
 
@@ -306,25 +265,19 @@ class gun():
         run()
         root.after(40, run())
 
-
-
-
-
-
-
-
     def aiming(self, event=0):
-        canv.delete(self.oval)
-        canv.delete(self.id)
-        self.oval = canv.create_oval(self.x - 20, self.y - 20, self.x + 20, self.y + 20, fill="pink",
-                                     outline='purple')
-        self.id = canv.create_line(self.x, self.y, self.x - 30, self.y - 20, width=5, fill="purple")
         if event:
             if abs(event.x - self.x) < 0.0001:
                 event.x += 0.1
             self.an = atan((event.y - self.y) / (event.x - self.x))
             if event.x < self.x:
                 self.an += pi
+
+        canv.delete(self.oval)
+        canv.delete(self.id)
+        self.oval = canv.create_oval(self.x - 20, self.y - 20, self.x + 20, self.y + 20, fill="pink",
+                                     outline='purple')
+        self.id = canv.create_line(self.x, self.y, self.x - 30, self.y - 20, width=5, fill="purple")
 
         if self.f2_on:
             canv.itemconfig(self.id, fill='orange')
@@ -342,21 +295,19 @@ class gun():
             canv.itemconfig(self.id, fill='purple')
 
 
+class Game:
+    create_background()
 
-
-
-
-class game():
     def __init__(self):
         self.moving = []
-        self.gamer1 = gun()
+        self.gamer1 = Gun()
         self.gamer1.x = 10
         self.gamer1.y = 500
-        self.gamer2 = gun()
+        self.gamer2 = Gun()
         self.gamer2.x = 990
         self.gamer2.y = 400
-        self.gamer1.balls = self.moving
-        self.gamer2.balls = self.moving
+        self.gamer1.Balls = self.moving
+        self.gamer2.Balls = self.moving
         self.active_gamer = self.gamer1
 
         canv.bind('<Button-1>', self.fire_start)
@@ -365,7 +316,6 @@ class game():
         canv.bind('<Motion>', self.aiming)
 
         self.go = 1
-
 
     def fire_start(self, event):
         self.active_gamer.fire_start(event)
@@ -380,19 +330,16 @@ class game():
     def power_up(self, event):
         self.active_gamer.power_up(event)
 
-    def move(self, event):
-        self.active_gamer.move(event)
-
     def moved(self, event):
         self.active_gamer.moved(event)
 
     def round(self):
         if self.active_gamer == self.gamer1:
             self.active_gamer = self.gamer2
-            print('g1')
+            print('Gamer1')
         else:
             self.active_gamer = self.gamer1
-            print('g2')
+            print('Gamer2')
 
         self.active_gamer.on = 1
 
@@ -405,6 +352,6 @@ class game():
             time.sleep(0.01)
 
 
-game1 = game()
+game1 = Game()
 while 1:
     game1.round()
