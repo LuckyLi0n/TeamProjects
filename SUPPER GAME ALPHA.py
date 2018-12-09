@@ -1,4 +1,4 @@
-from random import randrange as rnd, choice
+from random import randrange as rnd, choice, uniform
 from tkinter import *
 from math import *
 import time
@@ -52,7 +52,7 @@ def create_background():
         tree_snow_1 = canv.create_polygon(596, 313, 600, 300, 604, 313, fill='white', outline='white')
         tree_snow_2 = canv.create_polygon(971, 263, 975, 250, 979, 263, fill='white', outline='white')
 
-    forest()
+
 
 
 
@@ -61,20 +61,10 @@ def create_background():
     snow_6 = canv.create_polygon(0, 0, 5, 0, 5, 0, fill='white', outline='white')
     snow_7 = canv.create_polygon(10, 0, 5, 0, 5, 0, fill='white', outline='white')
 
-
     def create_sun():
-
-        sun = canv.create_oval(900, 100, 1100, -100, fill='gold', outline='gold')
-
-        sunray_1 = canv.create_line(1000, 0, 795, 25, width=2, fill='gold')
-        sunray_2 = canv.create_line(1000, 0, 835, 50, width=2, fill='gold')
-        sunray_3 = canv.create_line(1000, 0, 810, 80, width=2, fill='gold')
-        sunray_4 = canv.create_line(1000, 0, 860, 90, width=2, fill='gold')
-        sunray_5 = canv.create_line(1000, 0, 875, 130, width=2, fill='gold')
-        sunray_6 = canv.create_line(1000, 0, 925, 125, width=2, fill='gold')
-        sunray_7 = canv.create_line(1000, 0, 950, 170, width=2, fill='gold')
-        sunray_8 = canv.create_line(1000, 0, 980, 130, width=2, fill='gold')
-
+        un = canv.create_oval(900, 100, 1100, -100, fill='gold', outline='gold')
+        for end_x, end_y in [(795, 25), (835, 50), (810, 80), (860, 90), (875, 130) ,(925, 125), (950, 170), (980, 130)]:
+            sunray = canv.create_line(1000, 0, end_x, end_y, width=2, fill='gold')
 
     def create_cloud():
         coord_clouds = [(30, 60), (200, 110), (400, 60), (600, 160), (800, 200)]
@@ -87,6 +77,7 @@ def create_background():
     create_cloud()
     create_sun()
     mount()
+    forest()
 
     for circle_right, circle_up, circle_left, circle_down in [(-300, 500, 300, 1100),
                                                               (600, 400, 1400, 1200),
@@ -96,16 +87,6 @@ def create_background():
 
 
 create_background()
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -128,78 +109,60 @@ class ball():
         self.balls = balls
         self.bum_time = 10
         self.bum_on = 0
-
+        self.vx_wind = uniform(-0.05, 0.05)
+        self.vy_wind = uniform(-0.01, 0.05)
+        self.turn_point_1, self.turn_point_2, self.turn_point_3, self.turn_point_4 = 0, 139, 727, 1000
 
     def paint(self):
         canv.coords(self.id, self.x - self.r, self.y - self.r, self.x + self.r, self.y + self.r)
 
         """отвечает за отрисовку шарика в новой коордитате"""
 
-
     def move(self):
-        if self.y <= 560:
-            self.vy += 0.07
-            self.y += self.vy
+
+        if self.turn_point_1 <= self.x <= self.turn_point_2:
+            y = 800 - sqrt(300 ** 2 - self.x ** 2)
+        elif self.turn_point_2 <= self.x <= self.turn_point_3:
+            y = 925 - sqrt(500 ** 2 - (self.x - 450) ** 2)
+        elif self.turn_point_3 <= self.x <= self.turn_point_4:
+            y = 800 - sqrt(400 ** 2 - (self.x - 1000) ** 2)
+
+        if self.y <= y:
+            self.vy += 0.1
+            self.y += self.vy + self.vx_wind
             self.x += self.vx
-            self.vx *= 0.999
+            self.vx *= (0.999-self.vy_wind)
             self.v = (self.vx ** 2 + self.vy ** 2) ** 0.5
             """считает полную скорость шарика"""
             self.an = atan(self.vy / self.vx)
             self.paint()
+
+            """уничтожает шарик"""
         else:
             self.live -= 1
             if self.live < 0:
                 self.bum()
-                """уничтожает шарик"""
 
-
+            """отвечает за поворот шарика при ударе о стену"""
         if self.x > 1000:
             self.vx = - self.vx / 2
             self.x = 999
         elif self.x < 0:
             self.vx = - self.vx / 2
             self.x = 1
-            """отвечает за поворот шарика при ударе о стену"""
 
 
-    def hittest(self, ob):
-        if abs(ob.x - self.x) <= (self.r + ob.r) and abs(ob.y - self.y) <= (self.r + ob.r):
-            return True
-        else:
-            return False
 
-        """не понимаю что это..."""
 
-    def ricochet(self, w):
-        self.v = (self.vx ** 2 + self.vy ** 2) ** 0.5
-        self.an = atan(self.vy / self.vx)
-
-        if self.x == w.x:
-            self.x += 1
-
-        if w.x - (self.x + self.vx):
-            an_rad = atan((w.y - (self.y + self.vy)) / (w.x - (self.x + self.vx)))
-            an_res = an_rad - (self.an - an_rad)
-
-            vx2 = 0.8 * self.v * cos(an_res)
-            vy2 = 0.8 * self.v * sin(an_res)
-            if self.an > 0 and self.vx < 0 and self.vy < 0 or self.an < 0 and self.vx < 0:
-                vx2 = -vx2
-                vy2 = -vy2
-            self.vx = -vx2
-            self.vy = -vy2
-            self.move()
-            self.points += 1
 
     def kill(self):
         canv.delete(self.id)
         try:
             '''отвечает за удаление шарика для перевода хода'''
             self.balls.pop(self.balls.index(self))
+
         except:
             pass
-
-
 
     def bum(self):
         if self.nature:
@@ -304,11 +267,13 @@ class gun():
             В зависимость от этого пересчитывает dx"""
             if self.x >= event.x:
                 self.dx = - self.dx
-                canv.delete(self.id)
                 canv.delete(self.oval)
-                self.id = canv.create_line(self.x, self.y, self.x - 30, self.y - 20, width=5, fill="purple")
+                canv.delete(self.id)
+
                 self.oval = canv.create_oval(self.x - 20, self.y - 20, self.x + 20, self.y + 20, fill="pink",
                                              outline='purple')
+                self.id = canv.create_line(self.x, self.y, self.x - 30, self.y - 20, width=5, fill="purple")
+
                 self.max = self.x
                 self.min = event.x
             else:
@@ -338,13 +303,12 @@ class gun():
                     canv.move(self.oval, self.dx, self.dy)
                     canv.move(self.id, self.dx, self.dy)
 
-            root.after(10, run)
-
+            root.after(40, run)
 
         find_y()
         coordination()
         run()
-        root.after(10, run())
+        root.after(40, run())
 
 
 
@@ -364,10 +328,9 @@ class gun():
         if self.f2_on:
             canv.itemconfig(self.id, fill='orange')
         else:
-            canv.itemconfig(self.id)
+            pass
 
-        canv.coords(self.id, self.x, self.y, self.x + 30 * cos(self.an),
-                    self.y + 30 * sin(self.an))
+        canv.coords(self.id, self.x, self.y, self.x + 30 * cos(self.an), self.y + 30 * sin(self.an))
 
     def power_up(self):
         if self.f2_on:
@@ -375,7 +338,7 @@ class gun():
                 self.f2_power += 1
             canv.itemconfig(self.id, fill='orange')
         else:
-            canv.itemconfig(self.id, fill='black')
+            canv.itemconfig(self.id, fill='purple')
 
     def bum(self, event=0):
         for b in self.balls[::-1]:
