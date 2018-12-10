@@ -7,9 +7,9 @@ root.geometry('1000x600')
 canv = Canvas(root,  bg='DeepSkyBlue')
 canv.pack(fill=BOTH, expand=1)
 
-def create_background():
-    canv.create_oval(325, 275, 1800, 1000, fill='DarkGreen', outline='DarkGreen')
 
+def create_background():
+    big_hill = canv.create_oval(325, 275, 1800, 1000, fill='DarkGreen', outline='DarkGreen')
 
     def mount():
         mount_11 = canv.create_polygon(100, 350, 175, 150, 175, 600, fill='gray42', outline='gray42')
@@ -62,6 +62,7 @@ def create_background():
 
 
     def create_sun():
+
         sun = canv.create_oval(900, 100, 1100, -100, fill='gold', outline='gold')
 
         sunray_1 = canv.create_line(1000, 0, 795, 25, width=2, fill='gold')
@@ -75,21 +76,24 @@ def create_background():
 
 
     def create_cloud():
-        x = 20
-        Cloud_1 = canv.create_oval(x, x, x+30, x+30, fill='white', outline='white')
-        Cloud_2 = canv.create_oval(20, 20, 50, 50, fill='white', outline='white')
+        coord_clouds = [(30, 60), (200, 110), (400, 60), (600, 160), (800, 200)]
+        for x, y in coord_clouds:
+            centers = [(x, y), (x+20, y), (x+40, y), (x+10, y-20), (x+30, y-20)]
+            for circle_x, circle_y in centers:
+                r = 20
+                Cloud = canv.create_oval(circle_x-r, circle_y-r, circle_x+r, circle_y+r, fill='white', outline='white')
 
 
+
+    create_cloud()
     create_sun()
     mount()
-
 
     for circle_right, circle_up, circle_left, circle_down in [(-300, 500, 300, 1100),
                                                               (600, 400, 1400, 1200),
                                                               (-50, 425, 950, 1425),
                                                               (600, 300, 3000, 2700)]:
         canv.create_oval(circle_right, circle_up, circle_left, circle_down, fill="ForestGreen", outline='ForestGreen')
-
 
 
 turn_point_1, turn_point_2, turn_point_3, turn_point_4 = 0, 139, 727, 1000
