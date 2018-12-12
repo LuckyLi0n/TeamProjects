@@ -176,6 +176,7 @@ class Gun:
         self.max = 0
         self.vx = 0
         self.f = 0
+        self.time = 0
 
         self.id = canv.create_line(self.x, self.y, self.x + 30, self.y - 20, width=5, fill="purple")
         self.oval = canv.create_oval(self.x - 20, self.y - 20, self.x + 20, self.y + 20, fill="pink", outline='purple')
@@ -209,7 +210,7 @@ class Gun:
 
     def moved(self, event):
         print('MOVED')
-
+        t_end = time.time() + 3
         def find_y():
             if self.turn_point_1 <= self.x <= self.turn_point_2:
                 self.y = 800 - sqrt(300 ** 2 - self.x ** 2)
@@ -236,29 +237,32 @@ class Gun:
                 self.max = event.x
                 self.min = self.x
 
-        def run():
-            if self.min <= self.x <= self.max:
-                self.x = self.x + self.dx
-                if self.turn_point_1 <= self.x <= self.turn_point_2:
-                    self.f = 800 - sqrt(300 ** 2 - self.x ** 2)
-                    self.dy = self.f - self.y
-                    self.y = self.y + self.dy
-                    canv.move(self.oval, self.dx, self.dy)
-                    canv.move(self.id, self.dx, self.dy)
-                elif self.turn_point_2 <= self.x <= self.turn_point_3:
-                    self.f = 925 - sqrt(500 ** 2 - (self.x - 450) ** 2)
-                    self.dy = self.f - self.y
-                    self.y = self.y + self.dy
-                    canv.move(self.oval, self.dx, self.dy)
-                    canv.move(self.id, self.dx, self.dy)
-                elif self.turn_point_3 <= self.x <= self.turn_point_4:
-                    self.f = 800 - sqrt(400 ** 2 - (self.x - 1000) ** 2)
-                    self.dy = self.f - self.y
-                    self.y = self.y + self.dy
-                    canv.move(self.oval, self.dx, self.dy)
-                    canv.move(self.id, self.dx, self.dy)
 
-            root.after(40, run)
+        def run():
+
+            if time.time() < t_end:
+                if self.min <= self.x <= self.max:
+                    self.x = self.x + self.dx
+                    if self.turn_point_1 <= self.x <= self.turn_point_2:
+                        self.f = 800 - sqrt(300 ** 2 - self.x ** 2)
+                        self.dy = self.f - self.y
+                        self.y = self.y + self.dy
+                        canv.move(self.oval, self.dx, self.dy)
+                        canv.move(self.id, self.dx, self.dy)
+                    elif self.turn_point_2 <= self.x <= self.turn_point_3:
+                        self.f = 925 - sqrt(500 ** 2 - (self.x - 450) ** 2)
+                        self.dy = self.f - self.y
+                        self.y = self.y + self.dy
+                        canv.move(self.oval, self.dx, self.dy)
+                        canv.move(self.id, self.dx, self.dy)
+                    elif self.turn_point_3 <= self.x <= self.turn_point_4:
+                        self.f = 800 - sqrt(400 ** 2 - (self.x - 1000) ** 2)
+                        self.dy = self.f - self.y
+                        self.y = self.y + self.dy
+                        canv.move(self.oval, self.dx, self.dy)
+                        canv.move(self.id, self.dx, self.dy)
+
+                root.after(40, run)
 
         find_y()
         coordination()
@@ -314,7 +318,7 @@ class Game:
         canv.bind('<Button-3>', self.moved)
         canv.bind('<ButtonRelease-1>', self.fire_end)
         canv.bind('<Motion>', self.aiming)
-
+        self.CONTROL = 0
         self.go = 1
 
     def fire_start(self, event):
@@ -331,9 +335,12 @@ class Game:
         self.active_gamer.power_up(event)
 
     def moved(self, event):
-        self.active_gamer.moved(event)
+        if self.CONTROL < 1:
+            self.CONTROL += 1
+            self.active_gamer.moved(event)
 
     def round(self):
+        self.CONTROL = 0
         if self.active_gamer == self.gamer1:
             self.active_gamer = self.gamer2
             print('Gamer1')
