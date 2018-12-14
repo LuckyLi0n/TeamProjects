@@ -308,6 +308,7 @@ class Game:
         self.gamer1.Balls = self.moving
         self.gamer2.Balls = self.moving
         self.active_gamer = self.gamer1
+        self.unactive_gamer = self.gamer2
 
         canv.bind('<Button-1>', self.fire_start)
         canv.bind('<Button-3>', self.moved)
@@ -354,5 +355,6 @@ class Game:
 
 
 game1 = Game()
+
 while 1:
     game1.round()
