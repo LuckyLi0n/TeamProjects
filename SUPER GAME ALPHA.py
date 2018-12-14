@@ -169,7 +169,6 @@ class Gun:
         self.f2_on = 0
         self.on = 1
         self.an = 1
-        self.points = 0
         self.dx = 1
         self.dy = 1
         self.min = 0
@@ -180,10 +179,7 @@ class Gun:
 
         self.id = canv.create_line(self.x, self.y, self.x + 30, self.y - 20, width=5, fill="purple")
         self.oval = canv.create_oval(self.x - 20, self.y - 20, self.x + 20, self.y + 20, fill="pink", outline='purple')
-        self.id_points = canv.create_text(30, 30, text=self.points, font='28')
         self.turn_point_1, self.turn_point_2, self.turn_point_3, self.turn_point_4 = 0, 139, 727, 1000
-
-        self.bullet = 0
 
     def fire_start(self, event):
         print(event.x, event.y)
@@ -197,7 +193,6 @@ class Gun:
     def fire_end(self, event):
         print(event.x, event.y)
         if self.on:
-            self.bullet += 1
             new_ball = Ball(self.Balls)
             new_ball.r += 5
             new_ball.x = self.x
@@ -209,8 +204,9 @@ class Gun:
             self.f2_power = 35
 
     def moved(self, event):
-        print('MOVED')
+        print('MOVE')
         t_end = time.time() + 3
+
         def find_y():
             if self.turn_point_1 <= self.x <= self.turn_point_2:
                 self.y = 800 - sqrt(300 ** 2 - self.x ** 2)
@@ -236,7 +232,6 @@ class Gun:
                 self.dx = self.dx
                 self.max = event.x
                 self.min = self.x
-
 
         def run():
 
@@ -319,7 +314,6 @@ class Game:
         canv.bind('<ButtonRelease-1>', self.fire_end)
         canv.bind('<Motion>', self.aiming)
         self.CONTROL = 0
-        self.go = 1
 
     def fire_start(self, event):
         self.active_gamer.fire_start(event)
