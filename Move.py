@@ -54,7 +54,7 @@ def create_background():
     forest()
 
 
-
+    """!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"""
 
     snow_5 = canv.create_polygon(0, 0, 15, 0, 5, 0, fill='white', outline='white')
     snow_6 = canv.create_polygon(0, 0, 5, 0, 5, 0, fill='white', outline='white')
