@@ -10,7 +10,7 @@ colors = ['blue', 'green', 'red', 'brown']
 
 root = Tk()
 root.geometry('1000x600')
-canv = Canvas(root, bg='green')
+canv = Canvas(root, bg='DeepSkyBlue')
 canv.pack(fill=BOTH, expand=1)
 
 img = Image.open("StartButton.png").resize((200, 200), Image.ANTIALIAS)
@@ -121,7 +121,7 @@ class Ball:
         self.turn_point_1, self.turn_point_2, self.turn_point_3, self.turn_point_4 = 0, 139, 727, 1000
 
     def paint(self):
-        """отвечает за отрисовку шарика в новой координате"""
+        """отвечает за отрисовку шарика в новой коордитате"""
         canv.coords(self.id, self.x - self.r, self.y - self.r, self.x + self.r, self.y + self.r)
 
     def move(self):
@@ -136,9 +136,9 @@ class Ball:
 
         if self.y <= y:
             self.vy += 0.1
-            self.y += self.vy + self.vy_wind / 100
+            self.y += self.vy + self.vy_wind/100
             self.x += self.vx
-            self.vx *= (0.999 - self.vx_wind / 1000)
+            self.vx *= (0.999-self.vx_wind/1000)
             self.paint()
 
         else:
@@ -303,6 +303,8 @@ class Gun:
 
 
 class Game:
+    create_background()
+
     def __init__(self):
         self.moving = []
         self.gamer1 = Gun()
@@ -390,7 +392,7 @@ def start_screen():
     canv.create_text(500, 200,
                      text="Добро пожаловать в игру ТАНКИ",
                      font=("Times New Roman", 30),
-                     fill="yellow")
+                     fill="black")
 
     start_button = Button(canv, image=img_photo, command=start_callback).pack(pady=50, side=BOTTOM)
     help_button = Button(canv, text="Правила игры", command=help_callback).pack(pady=30, side=TOP)
@@ -399,4 +401,3 @@ def start_screen():
 start_screen()
 
 root.mainloop()
-
