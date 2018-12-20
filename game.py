@@ -13,7 +13,7 @@ root.geometry('1000x600')
 canv = Canvas(root, bg='DeepSkyBlue')
 canv.pack(fill=BOTH, expand=1)
 
-img = Image.open("StartButton.png").resize((200, 200), Image.ANTIALIAS)
+img = Image.open("StartButton.png").resize((200, 177), Image.ANTIALIAS)
 img_photo = ImageTk.PhotoImage(img)
 
 
@@ -381,8 +381,9 @@ def start_screen():
                      font=("Times New Roman", 30),
                      fill="black")
 
-    start_button = Button(canv, image=img_photo, command=start_callback).pack(pady=50, side=BOTTOM)
-    help_button = Button(canv, text="Правила игры", command=help_callback).pack(pady=30, side=TOP)
+    help_button = Button(canv, text="Правила игры", bg="ForestGreen", command=help_callback).pack(padx=20, pady=20, side=BOTTOM, anchor=E)
+    start_button = Button(canv, image=img_photo, bg="ForestGreen", activebackground="ForestGreen",
+                          command=start_callback).pack(side=BOTTOM)
 
 
 start_screen()
