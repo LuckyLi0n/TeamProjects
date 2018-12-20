@@ -22,7 +22,6 @@ def create_background():
     big_hill = canv.create_oval(325, 275, 1800, 1000, fill='DarkGreen', outline='DarkGreen')
 
     def mount():
-
         mount_11 = canv.create_polygon(100, 350, 175, 150, 175, 600, fill='gray42', outline='gray42')
         mount_12 = canv.create_polygon(175, 600, 175, 150, 250, 350, fill='gray45', outline='gray45')
         snow_1 = canv.create_polygon(137, 250, 175, 150, 220, 250, 185, 221, 175, 250, 159, 224, fill='white',
@@ -44,30 +43,15 @@ def create_background():
                                      outline='white')
 
     def forest():
-        tree1 = canv.create_polygon(587, 350, 600, 300, 613, 350, fill='SpringGreen4', outline='SpringGreen4')
-        canv.create_line(600, 350, 600, 363, width=4, fill='Sienna')
-
-        tree2 = canv.create_polygon(587, 350, 600, 300, 613, 350, fill='SpringGreen4', outline='SpringGreen4')
-        canv.create_line(600, 350, 600, 363, width=4, fill='Sienna')
-
-        canv.create_line(775, 425, 775, 450, width=4, fill='Sienna')
-        tree3 = canv.create_polygon(750, 425, 775, 350, 800, 425, fill='SpringGreen4', outline='SpringGreen4')
-
-        canv.create_line(900, 375, 900, 392, width=4, fill='Sienna')
-        tree4 = canv.create_polygon(880, 375, 900, 315, 920, 375, fill='SpringGreen4', outline='SpringGreen4')
-
-        tree5 = canv.create_polygon(587, 350, 600, 300, 613, 350, fill='SpringGreen4', outline='SpringGreen4')
-        canv.create_line(600, 350, 600, 363, width=4, fill='Sienna')
-
-        canv.create_line(975, 300, 975, 312, width=4, fill='Sienna')
-        tree6 = canv.create_polygon(963, 300, 975, 250, 988, 300, fill='SpringGreen4', outline='SpringGreen4')
-
-        tree_snow_1 = canv.create_polygon(596, 313, 600, 300, 604, 313, fill='white', outline='white')
-        tree_snow_2 = canv.create_polygon(971, 263, 975, 250, 979, 263, fill='white', outline='white')
-
-    snow_5 = canv.create_polygon(0, 0, 15, 0, 5, 0, fill='white', outline='white')
-    snow_6 = canv.create_polygon(0, 0, 5, 0, 5, 0, fill='white', outline='white')
-    snow_7 = canv.create_polygon(10, 0, 5, 0, 5, 0, fill='white', outline='white')
+        trunks = [(837.5, 300, 837.5, 312), (600, 350, 600, 363), (775, 425, 775, 450),
+                  (900, 375, 900, 392), (700, 365, 700, 380), (975, 300, 975, 312)]
+        for begin_x, begin_y, end_x, end_y in trunks:
+            trunk = canv.create_line(begin_x, begin_y, end_x, end_y, width=4, fill='Sienna')
+        trees = [(825, 300, 837.5, 250, 850, 300), (587, 350, 600, 300, 613, 350), (750, 425, 775, 350, 800, 425),
+                 (880, 375, 900, 315, 920, 375), (680, 365, 700, 300, 720, 365), (963, 300, 975, 250, 988, 300)]
+        for left_x, left_y, up_x, up_y, right_x, right_y in trees:
+            tree = canv.create_polygon(left_x, left_y, up_x, up_y, right_x, right_y,
+                                       fill='SpringGreen4', outline='SpringGreen4')
 
     def create_sun():
         sun = canv.create_oval(900, 100, 1100, -100, fill='gold', outline='gold')
@@ -77,8 +61,9 @@ def create_background():
 
     def create_cloud():
         coord_clouds = [(30, 60), (200, 110), (400, 60), (600, 160), (800, 200)]
-        for x, y in coord_clouds:
-            centers = [(x, y), (x + 20, y), (x + 40, y), (x + 10, y - 20), (x + 30, y - 20)]
+        for cloud_x, cloud_y in coord_clouds:
+            centers = [(cloud_x, cloud_y), (cloud_x + 20, cloud_y), (cloud_x + 40, cloud_y),
+                       (cloud_x + 10, cloud_y - 20), (cloud_x + 30, cloud_y - 20)]
             for circle_x, circle_y in centers:
                 r = 20
                 Cloud = canv.create_oval(circle_x - r, circle_y - r, circle_x + r, circle_y + r, fill='white',
@@ -176,20 +161,17 @@ class Gun:
         self.f2_on = 0
         self.on = 1
         self.an = 1
-        self.points = 0
         self.dx = 1
         self.dy = 1
         self.min = 0
         self.max = 0
         self.vx = 0
         self.f = 0
+        self.time = 0
 
         self.id = canv.create_line(self.x, self.y, self.x + 30, self.y - 20, width=5, fill="purple")
         self.oval = canv.create_oval(self.x - 20, self.y - 20, self.x + 20, self.y + 20, fill="pink", outline='purple')
-        self.id_points = canv.create_text(30, 30, text=self.points, font='28')
         self.turn_point_1, self.turn_point_2, self.turn_point_3, self.turn_point_4 = 0, 139, 727, 1000
-
-        self.bullet = 0
 
     def fire_start(self, event):
         print(event.x, event.y)
@@ -203,7 +185,6 @@ class Gun:
     def fire_end(self, event):
         print(event.x, event.y)
         if self.on:
-            self.bullet += 1
             new_ball = Ball(self.Balls)
             new_ball.r += 5
             new_ball.x = self.x
@@ -215,7 +196,8 @@ class Gun:
             self.f2_power = 35
 
     def moved(self, event):
-        print('MOVED')
+        print('MOVE')
+        t_end = time.time() + 3
 
         def find_y():
             if self.turn_point_1 <= self.x <= self.turn_point_2:
@@ -244,28 +226,30 @@ class Gun:
                 self.min = self.x
 
         def run():
-            if self.min <= self.x <= self.max:
-                self.x = self.x + self.dx
-                if self.turn_point_1 <= self.x <= self.turn_point_2:
-                    self.f = 800 - sqrt(300 ** 2 - self.x ** 2)
-                    self.dy = self.f - self.y
-                    self.y = self.y + self.dy
-                    canv.move(self.oval, self.dx, self.dy)
-                    canv.move(self.id, self.dx, self.dy)
-                elif self.turn_point_2 <= self.x <= self.turn_point_3:
-                    self.f = 925 - sqrt(500 ** 2 - (self.x - 450) ** 2)
-                    self.dy = self.f - self.y
-                    self.y = self.y + self.dy
-                    canv.move(self.oval, self.dx, self.dy)
-                    canv.move(self.id, self.dx, self.dy)
-                elif self.turn_point_3 <= self.x <= self.turn_point_4:
-                    self.f = 800 - sqrt(400 ** 2 - (self.x - 1000) ** 2)
-                    self.dy = self.f - self.y
-                    self.y = self.y + self.dy
-                    canv.move(self.oval, self.dx, self.dy)
-                    canv.move(self.id, self.dx, self.dy)
 
-            root.after(40, run)
+            if time.time() < t_end:
+                if self.min <= self.x <= self.max:
+                    self.x = self.x + self.dx
+                    if self.turn_point_1 <= self.x <= self.turn_point_2:
+                        self.f = 800 - sqrt(300 ** 2 - self.x ** 2)
+                        self.dy = self.f - self.y
+                        self.y = self.y + self.dy
+                        canv.move(self.oval, self.dx, self.dy)
+                        canv.move(self.id, self.dx, self.dy)
+                    elif self.turn_point_2 <= self.x <= self.turn_point_3:
+                        self.f = 925 - sqrt(500 ** 2 - (self.x - 450) ** 2)
+                        self.dy = self.f - self.y
+                        self.y = self.y + self.dy
+                        canv.move(self.oval, self.dx, self.dy)
+                        canv.move(self.id, self.dx, self.dy)
+                    elif self.turn_point_3 <= self.x <= self.turn_point_4:
+                        self.f = 800 - sqrt(400 ** 2 - (self.x - 1000) ** 2)
+                        self.dy = self.f - self.y
+                        self.y = self.y + self.dy
+                        canv.move(self.oval, self.dx, self.dy)
+                        canv.move(self.id, self.dx, self.dy)
+
+                root.after(40, run)
 
         find_y()
         coordination()
@@ -316,13 +300,13 @@ class Game:
         self.gamer1.Balls = self.moving
         self.gamer2.Balls = self.moving
         self.active_gamer = self.gamer1
+        self.unactive_gamer = self.gamer2
 
         canv.bind('<Button-1>', self.fire_start)
         canv.bind('<Button-3>', self.moved)
         canv.bind('<ButtonRelease-1>', self.fire_end)
         canv.bind('<Motion>', self.aiming)
-
-        self.go = 1
+        self.CONTROL = 0
 
     def fire_start(self, event):
         self.active_gamer.fire_start(event)
@@ -338,9 +322,12 @@ class Game:
         self.active_gamer.power_up(event)
 
     def moved(self, event):
-        self.active_gamer.moved(event)
+        if self.CONTROL < 1:
+            self.CONTROL += 1
+            self.active_gamer.moved(event)
 
     def round(self):
+        self.CONTROL = 0
         if self.active_gamer == self.gamer1:
             self.active_gamer = self.gamer2
             print('Gamer1')
