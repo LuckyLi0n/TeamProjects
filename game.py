@@ -1,4 +1,4 @@
-from random import randrange as rnd, choice, randrange
+from random import choice, randrange
 from tkinter import *
 from tkinter.font import Font
 from PIL import Image, ImageTk
@@ -168,6 +168,7 @@ class Gun:
         self.vx = 0
         self.f = 0
         self.time = 0
+        self.Balls = []
 
         self.id = canv.create_line(self.x, self.y, self.x + 30, self.y - 20, width=5, fill="purple")
         self.oval = canv.create_oval(self.x - 20, self.y - 20, self.x + 20, self.y + 20, fill="pink", outline='purple')
@@ -318,8 +319,8 @@ class Game:
     def aiming(self, event):
         self.active_gamer.aiming(event)
 
-    def power_up(self, event):
-        self.active_gamer.power_up(event)
+    def power_up(self):
+        self.active_gamer.power_up()
 
     def moved(self, event):
         if self.CONTROL < 1:
@@ -381,7 +382,8 @@ def start_screen():
                      font=("Times New Roman", 30),
                      fill="black")
 
-    help_button = Button(canv, text="Правила игры", bg="ForestGreen", command=help_callback).pack(padx=20, pady=20, side=BOTTOM, anchor=E)
+    help_button = Button(canv, text="Правила игры", bg="ForestGreen", activebackground="ForestGreen",
+                          command=help_callback).pack(padx=20, pady=20, side=BOTTOM, anchor=E)
     start_button = Button(canv, image=img_photo, bg="ForestGreen", activebackground="ForestGreen",
                           command=start_callback).pack(side=BOTTOM)
 
