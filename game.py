@@ -13,7 +13,7 @@ root.geometry('1000x600')
 canv = Canvas(root, bg='DeepSkyBlue')
 canv.pack(fill=BOTH, expand=1)
 
-img = Image.open("StartButton.png").resize((200, 177), Image.ANTIALIAS)
+img = Image.open("StartButton.png").resize((140, 140), Image.ANTIALIAS)
 img_photo = ImageTk.PhotoImage(img)
 
 
@@ -250,12 +250,12 @@ class Gun:
                         canv.move(self.oval, self.dx, self.dy)
                         canv.move(self.id, self.dx, self.dy)
 
-                root.after(40, run)
+                root.after(70, run)
 
         find_y()
         coordination()
         run()
-        root.after(40, run())
+        root.after(100, run())
 
     def aiming(self, event=0):
         if event:
@@ -385,7 +385,7 @@ def start_screen():
     help_button = Button(canv, text="Правила игры", bg="ForestGreen", activebackground="ForestGreen",
                           command=help_callback).pack(padx=20, pady=20, side=BOTTOM, anchor=E)
     start_button = Button(canv, image=img_photo, bg="ForestGreen", activebackground="ForestGreen",
-                          command=start_callback).pack(side=BOTTOM)
+                          command=start_callback).place(x=400, y=445)
 
 
 start_screen()
